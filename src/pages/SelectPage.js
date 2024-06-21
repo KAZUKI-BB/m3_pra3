@@ -15,15 +15,28 @@ const SelectPage = () => {
         const fetchProfile = async () => {
             //ダミーAPIでデータを取得
             setNickname('User1');
-            setTotalPlayTime(11);
+            setTotalPlayTime(1111);
         };
 
         // プロフィール情報の取得を実行
         fetchProfile();
     }, []);// 初回レンダリング時のみの実行
 
+    // ログアウトボタン押下時の処理
+    const handleLogout = () => {
+        // セッションストレージから認証トークンを削除
+        sessionStorage.removeItem('authToken');
+        // スタートページへ遷移
+        navigate('/')
+    };
+
     return (
-        <h1>ログイン成功</h1>
+        <div>
+            <h1>SelectPage</h1>
+            <p>Nickname : {nickname}</p>
+            <p>Total Play Time : {totalPlayTime / 60} min</p>
+            <button onClick={handleLogout}>Logout</button>
+        </div>
     );
 };
 
