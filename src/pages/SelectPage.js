@@ -1,6 +1,7 @@
 // 各フックのインポート
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import RequireAuth from '../components/RequireAuth';
 
 const SelectPage = () => {
     // ニックネーム保存用のステート
@@ -20,10 +21,21 @@ const SelectPage = () => {
 
         // プロフィール情報の取得を実行
         fetchProfile();
-    }, []);// 初回レンダリング時のみの実行
+    }, []);// 初回レンダリング時のみの実行  
+
+
+    const handleLogout = () =>{
+        sessionStorage.removeItem('authToken');
+        navigate('/');
+    };
 
     return (
-        <h1>ログイン成功</h1>
+        <RequireAuth>
+            <div>
+                <h1>ログイン成功</h1>
+                <button onClick={handleLogout}>ログアウト</button>
+            </div>
+        </RequireAuth>
     );
 };
 
