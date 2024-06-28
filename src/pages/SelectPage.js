@@ -23,17 +23,40 @@ const SelectPage = () => {
         fetchProfile();
     }, []);// 初回レンダリング時のみの実行  
 
-
+    // ログインボタン押下時の処理
     const handleLogout = () =>{
+        // セッションストレージからauthTokenを削除
         sessionStorage.removeItem('authToken');
+        // startpageに戻る
         navigate('/');
     };
+
+    // プロフィールセッティングボタン押下時の処理
+    const handleProfile = () => {
+        // プロフィールセッティングページに遷移
+        navigate('/profile');
+    };
+
+    // ゲームボタン押下時の処理
+    const handleGame = (difficulty) =>{
+        // URLに難易度を付けてゲームページに遷移
+        navigate(`/game?difficulty=${difficulty}`);
+    }
 
     return (
         <RequireAuth>
             <div>
-                <h1>ログイン成功</h1>
-                <button onClick={handleLogout}>ログアウト</button>
+                <h1>Select Page</h1>
+                <p>Nickname: {nickname}</p>
+                <p>Total Play Time: {totalPlayTime / 60} minutes</p>
+                <button onClick={handleProfile}>Profile Settings</button>
+                <button onClick={handleLogout}>Logout</button>
+            </div>
+            <div>
+                <h2>Select Difficulty</h2>
+                <button onClick={() => handleGame('easy')}>Easy</button>
+                <button onClick={() => handleGame('medium')}>Medium</button>
+                <button onClick={() => handleGame('hard')}>Hard</button>
             </div>
         </RequireAuth>
     );
