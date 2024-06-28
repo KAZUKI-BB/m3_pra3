@@ -16,16 +16,15 @@ const SelectPage = () => {
         const fetchProfile = async () => {
             //ダミーAPIでデータを取得
             setNickname('User1');
-            setTotalPlayTime(11);
+            setTotalPlayTime(1111);
         };
 
         // プロフィール情報の取得を実行
         fetchProfile();
-    }, []);// 初回レンダリング時のみの実行  
+    }, []);// 初回レンダリング時のみの実行
 
-    // ログインボタン押下時の処理
+
     const handleLogout = () =>{
-        // セッションストレージからauthTokenを削除
         sessionStorage.removeItem('authToken');
         // startpageに戻る
         navigate('/');
@@ -46,17 +45,8 @@ const SelectPage = () => {
     return (
         <RequireAuth>
             <div>
-                <h1>Select Page</h1>
-                <p>Nickname: {nickname}</p>
-                <p>Total Play Time: {totalPlayTime / 60} minutes</p>
-                <button onClick={handleProfile}>Profile Settings</button>
-                <button onClick={handleLogout}>Logout</button>
-            </div>
-            <div>
-                <h2>Select Difficulty</h2>
-                <button onClick={() => handleGame('easy')}>Easy</button>
-                <button onClick={() => handleGame('medium')}>Medium</button>
-                <button onClick={() => handleGame('hard')}>Hard</button>
+                <h1>ログイン成功</h1>
+                <button onClick={handleLogout}>ログアウト</button>
             </div>
         </RequireAuth>
     );
