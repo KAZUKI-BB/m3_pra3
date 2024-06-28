@@ -47,6 +47,10 @@ const GamePage = () => {
         } else if (e.key === 'ArrowRight') {
             newX += 1;
         }
+        // Y座標チェック(記法：ガード節)
+        if (newY < 0 || newY >= field.length) {
+            return
+        }
         // 最新のユーザー座標がフィールド内かつ障害物に該当しないかチェック
         if (
             newY >= 0 &&// 縦方向の始点の境界チェック
