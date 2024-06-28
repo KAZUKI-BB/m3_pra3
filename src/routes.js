@@ -3,9 +3,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import StartPage from './pages/StartPage';
 import SelectPage from './pages/SelectPage';
-import ProfilePage from '/pages/ProfilePage';
-import GamePage from '/pages/GamePage';
-import ClearPage from '/pages/ClearPage';
+import ProfilePage from './pages/ProfilePage';
+import GamePage from './pages/GamePage';
+import ClearPage from './pages/ClearPage';
 import RequireAuth from './components/RequireAuth';
 
 const AppRoutes = () => (
@@ -20,7 +20,7 @@ const AppRoutes = () => (
                     </RequireAuth>
                 }
             />
-            <Route 
+            <Route
                 path="/profile"
                 element={
                     <RequireAuth>
@@ -28,7 +28,7 @@ const AppRoutes = () => (
                     </RequireAuth>
                 }
             />
-            <Route 
+            <Route
                 path="/game"
                 element={
                     <RequireAuth>
@@ -36,7 +36,7 @@ const AppRoutes = () => (
                     </RequireAuth>
                 }
             />
-            <Route 
+            <Route
                 path="/clear"
                 element={
                     <RequireAuth>
