@@ -10,19 +10,19 @@ const GamePage = () => {
     const [field, setField] = useState([]);// ゲームフィールドの保持
     const navigate = useNavigate();// ルーティング用フック
     const location = useLocation();// URL情報取得フック
-    const difficulty = new URLSearchParams(location.search).get('difficult');// URLクエリから難易度を取得
+    const difficulty = new URLSearchParams(location.search).get('difficulty');// URLクエリから難易度を取得
 
     //コンポーネントのマウント時に一回だけ実行する処理
     useEffect(() => {
         // 初期ゲームフィールドを設定(APIは使わずダミー)
         setField([
-            ['P', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', ''],
-            ['', '', 'W', '', '', '', ''],
+            ['P', 'W', '', '', '', 'B', ''],
+            ['', '', '', '', '', 'B', ''],
+            ['', 'W', 'W', '', 'B', '', ''],
             ['', '', '', 'B', '', '', ''],
-            ['', '', '', '', '', '', ''],
-            ['', '', '', '', '', 'F', ''],
-            ['', '', '', '', '', '', ''],
+            ['W', '', 'W', '', 'B', 'B', ''],
+            ['', '', '', '', 'B', 'F', ''],
+            ['', '', 'B', '', '', '', ''],
         ]);
 
         // 1s毎に時間を加算するタイマーの設定
