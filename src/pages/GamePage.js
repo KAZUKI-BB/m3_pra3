@@ -57,10 +57,28 @@ const GamePage = () => {
             newX >= 0 &&// 横方向の始点の境界チェック
             newY < field.length &&// 縦方向の終点の境界チェック
             newX < (field[newY] ? field[newY].length : 0) &&// 横方向の終点の境界チェック 
-            field[newY][newX] !== 'W' &&// 壁に対する判定
-            field[newY][newX] !== 'B'// 障害物に対する判定
+            field[newY][newX] !== 'W'// 壁に対する判定
         ) {
-            setPlayerPosition({ x: newX, y: newY });// プレイヤー位置の更新
+            if (field[newY][newX] === 'B'){
+                const blockNewX = newX + (newX - x);
+                const blockNewY = newY + (newY - y);
+
+                if(
+                    blockNewX >= 0 &&
+                    blockNewY >= 0 &&
+                    blockNewX < field.length &&
+                    blockNewY < (field[blockNewY] ? field[blockNewY].length : 0) &&
+                    field[blockNewY][blockNewX] === ''
+                ){
+                    const newField = field.map((row) => [...row]);
+                    newField[newY][newX] = '';
+                    newField[blockNewY][blockNewX] = 'B';
+                    setField(newField);
+                    setPlayerPosition({x: newX, y: newY});
+                }
+            }else{
+                setPlayerPosition({ x: newX, y: newY });// プレイヤー位置の更新
+            }
         }
 
         // プレイヤーがゴールに到達したかチェック
