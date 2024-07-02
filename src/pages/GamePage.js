@@ -22,7 +22,7 @@ const GamePage = () => {
             ['', '', '', 'B', '', '', ''],
             ['W', '', 'W', '', 'B', 'B', ''],
             ['', '', '', '', 'B', 'F', ''],
-            ['', '', 'B', '', '', '', ''],
+            ['', '', 'B', 'B', '', '', ''],
         ]);
 
         // 1s毎に時間を加算するタイマーの設定
@@ -59,22 +59,23 @@ const GamePage = () => {
             newX < (field[newY] ? field[newY].length : 0) &&// 横方向の終点の境界チェック 
             field[newY][newX] !== 'W'// 壁に対する判定
         ) {
+            // ブロックに対する判定
             if (field[newY][newX] === 'B'){
-                const blockNewX = newX + (newX - x);
-                const blockNewY = newY + (newY - y);
+                const blockNewX = newX + (newX - x);// 移動後のブロックのX座標
+                const blockNewY = newY + (newY - y);// 移動後のブロックのY座標
 
                 if(
-                    blockNewX >= 0 &&
-                    blockNewY >= 0 &&
-                    blockNewX < field.length &&
-                    blockNewY < (field[blockNewY] ? field[blockNewY].length : 0) &&
-                    field[blockNewY][blockNewX] === ''
+                    blockNewX >= 0 &&// 縦方向の始点の境界チェック
+                    blockNewY >= 0 &&// 横方向の始点の境界チェック
+                    blockNewX < field.length &&// 縦方向の終点の境界チェック
+                    blockNewY < (field[blockNewY] ? field[blockNewY].length : 0) &&// 横方向の終点の境界チェック
+                    field[blockNewY][blockNewX] === ''// 空白に対するチェック
                 ){
-                    const newField = field.map((row) => [...row]);
-                    newField[newY][newX] = '';
-                    newField[blockNewY][blockNewX] = 'B';
-                    setField(newField);
-                    setPlayerPosition({x: newX, y: newY});
+                    const newField = field.map((row) => [...row]);// 新しいフィールドの設定
+                    newField[newY][newX] = '';// ブロック移動前の座標を空白に
+                    newField[blockNewY][blockNewX] = 'B';// 移動先座標にブロックを配置
+                    setField(newField);// フィールドの更新
+                    setPlayerPosition({x: newX, y: newY});// プレイヤー一の更新
                 }
             }else{
                 setPlayerPosition({ x: newX, y: newY });// プレイヤー位置の更新
@@ -96,11 +97,17 @@ const GamePage = () => {
         };
     }, [handleKeyDown]);// handleKeyDownが実行されるたびに再実行される
 
+    const formatTime = (time) => {
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`; // 秒数が一桁の場合にゼロ埋め
+    };
+
     return (
         <RequireAuth>
             <div>
                 <h1>GamePage - Difficulty: {difficulty}</h1>
-                <p>Time: {Math.floor(time / 60)}:{Math.floor(time % 60)}</p>
+                <p>Time: {formatTime(time)}</p>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 50px)', gap: '5px' }}>
                     {field.map((row, rowIndex) => (
                         row.map((cell, cellIndex) => (
