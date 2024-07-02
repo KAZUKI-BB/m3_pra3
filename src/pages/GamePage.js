@@ -97,9 +97,10 @@ const GamePage = () => {
         };
     }, [handleKeyDown]);// handleKeyDownが実行されるたびに再実行される
 
+    // 
     const formatTime = (time) => {
-        const minutes = Math.floor(time / 60);
-        const seconds = Math.floor(time % 60);
+        const minutes = Math.floor(time / 60);// 分表示
+        const seconds = Math.floor(time % 60);// 秒表示
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`; // 秒数が一桁の場合にゼロ埋め
     };
 
