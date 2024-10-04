@@ -132,8 +132,6 @@ const GamePage = () => {
             </div>
         </RequireAuth>
     );
-
-
 };
 
 export default GamePage;
