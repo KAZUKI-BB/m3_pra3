@@ -7,9 +7,9 @@ const app = express();
 app.use(express.json());
 
 const corsOptions = {
-    origin: '*',
-    optionsSuccessStatus: 200,
-    credentials: true
+  origin: '*',
+  optionsSuccessStatus: 200,
+  credentials: true
 };
 
 app.use(cors(corsOptions));
@@ -57,7 +57,7 @@ app.post('/api/auth/login', (req, res) => {
   }
 
   const user = users.find(u => u.username === username && u.password === password);
-console.log(user)
+  console.log(user)
   if (!user) {
     return res.status(401).json({ success: false, message: '認証失敗' });
   }
@@ -82,7 +82,7 @@ app.post('/api/auth/logout', authenticateToken, (req, res) => {
 app.get('/api/profile', authenticateToken, (req, res) => {
   console.log(req)
   const user = users.find(u => u.username === req.user.username);
-  
+
   if (!user) {
     return res.status(404).json({ success: false, message: 'ユーザーが見つかりません' });
   }
@@ -162,7 +162,7 @@ app.post('/api/results', authenticateToken, (req, res) => {
 });
 
 // サーバーの起動
-const PORT = process.env.PORT || 8085;
+const PORT = process.env.PORT || 8086;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
