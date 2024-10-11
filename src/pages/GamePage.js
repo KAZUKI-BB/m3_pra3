@@ -14,7 +14,7 @@ const GamePage = () => {
     useEffect(() => {
         const fetchField = async () => {
             try {
-                const response = await fetch('/api/fields', {
+                const response = await fetch('http://localhost:8085/api/fields', {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -94,7 +94,7 @@ const GamePage = () => {
 
     const saveResult = async () => {
         try {
-            const response = await fetch('/api/results', {
+            const response = await fetch('http://localhost:8085/api/results', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
