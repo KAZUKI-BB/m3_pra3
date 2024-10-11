@@ -21,6 +21,7 @@ const ProfilePage = () => {
                         'Authorization': `Bearer ${token}`,
                     },
                 });
+                console.log(response)   
                 if (!response.ok) {
                     throw new Error('プロフィール情報の取得に失敗しました');
                 }

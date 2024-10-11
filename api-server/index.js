@@ -7,21 +7,21 @@ const app = express();
 app.use(express.json());
 
 const corsOptions = {
-    origin: '*', // 
+    origin: '*',
     optionsSuccessStatus: 200,
-    credentials: true 
-  };
-  
-  app.use(cors(corsOptions));
+    credentials: true
+};
+
+app.use(cors(corsOptions));
 
 // 秘密鍵（JWTの署名用）
 const SECRET_KEY = 'xxxxxxxxxxxxxxxxxxxxxxxx';
 
 // ユーザーデータ（デモ用にハードコーディング）
-const users = [
-  { username: 'gorin', password: '2023' },
-  { username: 'gorin2', password: '2023' },
-  { username: 'gorin3', password: '2023' },
+let users = [
+  { username: 'gorin', password: '2023', nickname: 'Gorin' },
+  { username: 'gorin2', password: '2023', nickname: 'Gorin2' },
+  { username: 'gorin3', password: '2023', nickname: 'Gorin3' },
 ];
 
 // トークンのブラックリスト（ログアウト時に使用）
@@ -57,7 +57,7 @@ app.post('/api/auth/login', (req, res) => {
   }
 
   const user = users.find(u => u.username === username && u.password === password);
-
+console.log(user)
   if (!user) {
     return res.status(401).json({ success: false, message: '認証失敗' });
   }
@@ -76,6 +76,53 @@ app.post('/api/auth/logout', authenticateToken, (req, res) => {
   tokenBlacklist.push(token);
 
   res.json({ success: true });
+});
+
+// プロフィール取得API
+app.get('/api/profile', authenticateToken, (req, res) => {
+  console.log(req)
+  const user = users.find(u => u.username === req.user.username);
+  
+  if (!user) {
+    return res.status(404).json({ success: false, message: 'ユーザーが見つかりません' });
+  }
+
+  res.json({ success: true, profile: { username: user.username, nickname: user.nickname } });
+});
+
+// プロフィール更新API
+app.put('/api/profile', authenticateToken, (req, res) => {
+  const { username, nickname } = req.body;
+
+  // バリデーション
+  const usernamePattern = /^[a-zA-Z0-9]{5,}$/;
+  if (!username || !usernamePattern.test(username)) {
+    return res.status(400).json({ success: false, message: 'ユーザーネームは必須で、5文字以上かつa-z/A-Z/0-9のみ使用可能です' });
+  }
+
+  if (!nickname || nickname.length < 4) {
+    return res.status(400).json({ success: false, message: 'ニックネームは必須で、4文字以上である必要があります' });
+  }
+
+  // ユーザーネームの重複チェック
+  const existingUser = users.find(u => u.username === username && u.username !== req.user.username);
+  if (existingUser) {
+    return res.status(409).json({ success: false, message: 'The username is already taken.' });
+  }
+
+  // プロフィール更新
+  const user = users.find(u => u.username === req.user.username);
+  if (user) {
+    user.username = username;
+    user.nickname = nickname;
+
+    // 新しいトークンを発行
+    const token = jwt.sign({ username: user.username }, SECRET_KEY, { expiresIn: '1h' });
+
+    return res.json({ success: true, message: 'プロフィールが更新されました', token });
+  }
+
+  res.status(404).json({ success: false, message: 'ユーザーが見つかりません' });
 });
 
 // フィールド取得API
