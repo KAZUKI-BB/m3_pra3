@@ -1,7 +1,7 @@
 // 各フックのインポート
 import React, { useState } from "react";
-import { login } from '../api/auth'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // API呼び出しのためにaxiosをインポート
 
 const StartPage = () => {
     // ユーザ名とパスワードを保存するステートの宣言
@@ -12,30 +12,44 @@ const StartPage = () => {
 
     // ログインボタンクリックでhandleLogin関数を呼び出し
     const handleLogin = async () => {
-        // 以下try&catch文
         try {
-            // ogin関数を呼び出して認証、トークンを取得
-            const token = await login(username, password);
-            // 認証成功後セッションをストレージに保存
+            // ログインAPIにPOSTリクエストを送信し、トークンを取得
+            const response = await axios.post('http://localhost:8086/api/auth/login', { username, password });
+            const token = response.data.token;
+
+            // 認証成功後にトークンをセッションストレージに保存
             sessionStorage.setItem('authToken', token);
+
             // selectページに遷移
             navigate('/select');
         } catch (error) {
             // 認証失敗時にはエラーメッセージをアラート表示
-            alert(error.message);
+            if (error.response && error.response.data && error.response.data.message) {
+                alert(error.response.data.message);
+            } else {
+                alert('ログインに失敗しました。');
+            }
         }
     };
 
     return (
         <div>
             <h1>Login</h1>
-            <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
             <button onClick={handleLogin}>Login</button>
         </div>
     );
 };
 
 export default StartPage;
-
-

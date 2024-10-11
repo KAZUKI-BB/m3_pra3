@@ -14,7 +14,7 @@ const GamePage = () => {
     // フィールドデータをAPIから取得
     const fetchFieldData = async () => {
         try {
-            const response = await axios.get("http://localhost:8085/api/fields", {
+            const response = await axios.get("http://localhost:8086/api/fields", {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const fieldData = response.data.objects;
@@ -38,7 +38,7 @@ const GamePage = () => {
     useEffect(() => {
         const login = async () => {
             try {
-                const response = await axios.post("http://localhost:8085/api/auth/login", {
+                const response = await axios.post("http://localhost:8086/api/auth/login", {
                     username: "gorin",
                     password: "2023"
                 });
